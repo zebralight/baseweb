@@ -281,11 +281,14 @@ class Select extends React.Component<PropsT, SelectStateT> {
     this.openAfterFocus = false;
   };
 
-  handleBlur = (event: FocusEvent | MouseEvent) => {
+  handleBlur = (event: SyntheticEvent) => {
+    if (event.target && event.target.type === 'radio') return;
+
     if (event.relatedTarget) {
       if (
         containsNode(this.anchor.current, event.relatedTarget) ||
-        containsNode(this.dropdown.current, event.relatedTarget)
+        containsNode(this.dropdown.current, event.relatedTarget) ||
+        event.relatedTarget.type === 'radio'
       ) {
         return;
       }

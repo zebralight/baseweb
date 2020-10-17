@@ -338,4 +338,21 @@ describe('select', () => {
 
     expect(matchArrayElements(actual, expected)).toBe(true);
   });
+
+  it('opens dropdown when a child of a Radio component', async () => {
+    await mount(page, 'select-in-radio');
+    await page.waitForSelector(selectors.selectInput);
+    await page.click(selectors.selectInput);
+    await page.waitForSelector(selectors.selectDropDown);
+    await page.click(optionAtPosition(1));
+    await page.waitForSelector(selectors.selectDropDown, {
+      hidden: true,
+    });
+
+    const selectedValue = await page.$eval(
+      selectors.selectedList,
+      select => select.textContent,
+    );
+    expect(selectedValue).toBe('AliceBlue');
+  });
 });
